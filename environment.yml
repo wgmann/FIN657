@@ -1,0 +1,14 @@
+name: FIN657
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - fredapi
+  - wrds
+  - arch-py
+  - notebook
+  - matplotlib
+  - python-dotenv
+  - scikit-learn
+prefix: /home/william/miniforge3/envs/FIN657

@@ -15,6 +15,7 @@
 !/.github/
 !_config.yml
 !environment.yml
+!requirements.txt
 !.env.example
 
 # --- whitelist course content, but keep some files commented out until the appropriate point in the semester ---

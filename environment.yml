@@ -11,4 +11,3 @@ dependencies:
   - matplotlib
   - python-dotenv
   - scikit-learn
-prefix: /home/william/miniforge3/envs/FIN657

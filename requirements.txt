@@ -1,3 +1,8 @@
+pandas
+fredapi
 wrds
-arch-py
+arch
+notebook
+matplotlib
+python-dotenv
 scikit-learn

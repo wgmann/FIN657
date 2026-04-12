@@ -38,7 +38,7 @@ Contact me if you do not already have your access set up, and I will put you in 
 
 ## Google Colab
 
-Google Colab is a free service that offers you a way to run files like the code examples for our class in a browser window using Google's resources, with no need to install or set up anything on your own computer. The downside is that you only get limited resources, there is a time limit, the system can slow down if there's heavy traffic, and everything you do gets deleted when you close the window. For our course, this is an easy way to tinker with code but not a great environment if you will be spending significant time on the code.
+Google Colab is a free service that offers you a way to run files like the code examples for our class in a browser window using Google's resources, with no need to install or set up anything on your own computer. The downside is that you only get limited resources, there is a time limit, the system can slow down if there's heavy traffic, and everything you do gets deleted when you close the window.
 
 1. Open any of our `.ipynb` files on Google Colab.
     - I will try to provide a link for this in each case.

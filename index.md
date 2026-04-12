@@ -87,12 +87,12 @@ Conda is a tool for managing virtual environments that provides some extra funct
 Using Conda (after first installing it),
 do this from the course directory where you ended up after running the earlier commands:
 
-    conda create -n FIN657 python=3.12
-    conda activate FIN657
-    pip install .
+    conda env create -f environment.yml
 
 At this point you have created a virtual environment that you can activate anytime you want to run code in our class.
-To activate it, do `conda activate FIN657` from anywhere on your computer.
+To activate it, do this from anywhere on your computer:
+
+    conda activate FIN657
 
 Finally, with the environment activated, register it with Jupyter so that it appears as a selectable kernel in notebook systems or VSCode:
 
@@ -102,7 +102,7 @@ Finally, with the environment activated, register it with Jupyter so that it app
 
 The code posted in this repo frequently connects to outside databases, which requires a username and password.
 When writing code for yourself, if you need to do this, you could just write out your username and perhaps even your password as part of the code.
-But when collaborating on code, this is a bad idea for both security reasons (since the code will be sent over the internet) and for practical reasons (collaborators with different credentials will have to change the code before it can work on their end).
+But when sharing code, this is a bad idea for both security reasons (since the code will be sent over the internet) and for practical reasons (collaborators with different credentials will have to change the code before it can work on their end).
 
 Instead, the best approach is to have each collaborator create a "configuration" file to store all information that might be different for them from others.
 The goal is to have all the code look identical outside of this configuration file.

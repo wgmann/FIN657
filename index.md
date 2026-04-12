@@ -10,15 +10,16 @@ For now, if you're looking for information about the course, including topics, s
 
 This repository contains the files used when I teach the course.
 It is a collection of slides, Python notebooks, and other materials.
-**Students in this course are required to run this code locally** in order to understand the course concepts and complete the homework assignments.
+**Students in this course are required to run this code** in order to understand the course concepts and complete the homework assignments.
 
-There are several ways to get the code running locally.
-The easiest way is to clone the course repo, and set up a Conda environment as specified by the included `environment.yml` file.
-The rest of this page explains the steps behind this.
+There are several ways to do this.
+The easiest way to get started is to use Google Colab.
+A more effective way, but slightly more work, is to clone the course repo and run the code locally
+The rest of this page explains both approaches.
 
----
+## Databases
 
-To run the code on your own computer, you will first need API access to two databases, FRED and WRDS.
+Regardless of which approach you take, you will first need API access to two databases, FRED and WRDS.
 
 - [FRED](https://fred.stlouisfed.org/): 
 This is a public data source maintained by the Federal Reserve Bank of St Louis.
@@ -32,25 +33,38 @@ The instructions below will explain how to use it.
 - [WRDS](https://wrds.wharton.upenn.edu/): 
 This is not really a database but rather a front end for a large collection of common databases in finance.
 We will use it to download data on prices and returns for many different investments.
-This database is not free to the public, but you can sign up for free access as long as you are enrolled at Emory.
+This system is not free to the public, but you can sign up for free access as long as you are enrolled at Emory.
 Contact me if you do not already have your access set up, and I will put you in touch with the person who handles this on campus.
 
-Then you will need to follow these steps:
+## Google Colab
 
+oogle Colab is a free service that offers you a way to run files like the code examples for our class in a browser window using Google's resources, with no need to install or set up anything on your own computer. The downside is that you only get limited resources, there is a time limit, the system can slow down if there's heavy traffic, and everything you do gets deleted when you close the window. For our course, this is an easy way to tinker with code but not a great environment if you will be spending significant time on the code.
+
+1. Open any of our `.ipynb` files on Google Colab.
+    - I will try to provide a link for this in each case.
+    But in case I forget, you can also just open the Google Colab website, select "Github", search for my username `wgmann`, select this course `FIN657`, and scroll to the file you want.
+    - Or if you see the link to the file you want on Github.com, you can just replace the first part of the URL with `https://colab.research.google.com/github/`
+2. Click on the "Secrets" tab to the left. Add a secret called `FRED_API_KEY`, and another called `WRDS_USERNAME`, with your personal values of these (see above).
+    - When you run the code, and the system tries to connect to WRDS, it will prompt you for your password at that point.
+    - *Do not* type your personal information into the notebook file itself as this is less secure than the "Secrets" tab.
+3. Now just hit "Run all" in the notebook.
+    - Or you can execute individual cells one at a time, but make sure you start with the first code cell which is labeled "Standard setup cell".
+    - Be patient while this setup cell runs: depending on traffic conditions it can take 10 to 30 seconds.
+
+## Local setup
+
+Your own computer can easily execute all the code that we use in class. However, you have to install a few components that it will look for. The rest of this file walks you through how to do it. The steps are:
 
 1. Clone or download the repo to your own computer.
-2. Create a Conda environment from `environment.yml`.
+2. Create a virtual environment or Conda environment for the course, activate that environment, and install the course tools.
 3. Create a personal `.env` file with your credentials.
-4. Launch a jupyter notebook server.
+4. Launch a jupyter notebook server, or open in VSCode or a similar environment.
 
-Follow the steps below in order.
 Some of these steps will require you enter commands into a terminal window.
 On Mac, this is an app called Terminal.
 On Windows, use Command Prompt or PowerShell.
 
----
-
-## 1. Download or clone this repository
+### 1. Download or clone this repository
 
 If you know how to use git:
 
@@ -58,61 +72,33 @@ If you know how to use git:
     cd FIN657
 
 If you haven't installed or used git before, but want to try, see the [official webpage](https://git-scm.com) for resources to help you get started.
-
 If you don't want to use git, you can download the repository as a ZIP file from the GitHub website and then unzip it.
 
 (In either case, note that I will be adding materials to the repo as the semester progresses. If you did `git clone` then you can always pull the updates with `git pull`. If you are downloading from the GitHub website then you can navigate there to find the new files, or download the whole repo again.)
 
-All remaining commands below should be run **from inside the repository directory**.
+All remaining terminal commands should be entered from the repo folder (where you are after running the above commands).
 
----
+### 2. Create a virtual environment or Conda environment
 
-## 2. Create the Conda environment
+A Python virtual environment is a dedicated installation of Python along with various supporting packages. It's common to have a specific environment for every project you work on (such as this course). When you want to do any work in this project (e.g. run some of the code in the repo), you first "activate" the environment to load the correct interpreter and packages.
 
-### Background
+Conda is a tool for managing virtual environments that provides some extra functionality. It is very common in teaching and you have likely seen it before. The instructions below will focus on Conda, but you are free to set up a non-Conda virtual environment using the requirements.txt in the repo if you prefer.
 
-Python is a language. To use it, you need to install a program called a Python interpreter. To make it useful, you typically also have to download and install many add-on packages with extra features. When sharing code, it becomes very important to make sure you have the same version of the Python interpreter, and all the same packages and their versions, as the person who wrote the code initially. As you can imagine this can get complicated very quickly. 
+Using Conda (after first installing it),
+do this from the course directory where you ended up after running the earlier commands:
 
-One modern solution is, for each project that you work on (like this teaching repo), to have a dedicated "virtual environment" that includes a Python interpreter and the necessary packages for the project to work. When you want to do any work in this project (e.g. run some of the code in the repo), you first "activate" the environment to load the correct interpreter and packages, and then you can be confident that everything will run the same on your end as on mine.
-
-The main point of Conda is to make this process easier. 
-You give it a special kind of file called a `yml` file, which specifies a version of Python you want to use, and all the Python packages you need.
-It then creates an environment matching that description which you can activate whenever you want to work on the project.
-Then, anyone who wants to share code with you can also bundle a `yml` file that describes the environment the code should run in.
-You can use that yml to build an environment, activate it, and run the code from inside.
-
-Conda is especially common for teaching, but there are many other similar tools out there based on the same idea.
-You can think of all this as a very simple example of the idea of "infrastructure as code":
-the codebase includes a description of the system on which it should run, and that system is built around it.
-
-### Steps to follow
-
-Install Conda if you don't already have it.
-Several different versions exist.
-The most common are Miniconda or Anaconda, both of which are fine.
-
-Next, open a terminal and navigate to the repo directory `FIN657`.
-You will see a file there called `environment.yml`.
-Use this file to create your environment by running:
-
-    conda env create -f environment.yml
-
-This will create a Conda environment named `FIN657`.
-Once the environment is created, activate it:
-
+    conda create -n FIN657 python=3.12
     conda activate FIN657
+    pip install .
 
-Finally, with the conda environment activated, register this environment with Jupyter so that it appears as a selectable kernel in notebooks:
+At this point you have created a virtual environment that you can activate anytime you want to run code in our class.
+To activate it, do `conda activate FIN657` from anywhere on your computer.
 
-    python -m ipykernel install --user --name FIN657 --display-name "FIN657 (conda)"
+Finally, with the environment activated, register it with Jupyter so that it appears as a selectable kernel in notebook systems or VSCode:
 
-This step makes it easy to ensure your notebook is using the correct Python environment.
+    python -m ipykernel install --user --name FIN657 --display-name "FIN657"
 
----
-
-## 3. Set up your credentials (`.env` file)
-
-### Background
+### 3. Set up your credentials (`.env` file)
 
 The code posted in this repo frequently connects to outside databases, which requires a username and password.
 When writing code for yourself, if you need to do this, you could just write out your username and perhaps even your password as part of the code.
@@ -125,20 +111,13 @@ However, to keep everyone on the same page, a standard approach is to include in
 
 The most common convention is that the configuration file is called `.env` (notice the filename begins with a `.` which is a common way of labeling a system or configuration file). The template to help create the file is called `.env.example`. You use this template to create your own `.env` file, and then the code will look for that file when it runs to pull your user-specific information. The steps below explain how to set up your `.env` file correctly.
 
-### Steps to follow
-
 In the repo, you will see a file called `.env.example`. Make a copy of this file and rename it to `.env`.
-
-macOS / Linux:
-
-    cp .env.example .env
-
-Windows:
-
-    copy .env.example .env
+You can copy with a visual tool like Explorer or Finder, or else use terminal commands: On macOS / Linux,
+`cp .env.example .env`
+or on Windows
+`copy .env.example .env`
 
 Next, open `.env` in any text editor, and replace the placeholder values with your own information.
-
 The file looks like this:
 
     FRED_API_KEY=YOUR_FRED_API_KEY
@@ -154,71 +133,37 @@ Do not use quotes or spaces in the above. For example if your FRED key is abc123
 The Python code automatically loads variables from `.env` using the `python-dotenv` package.
 So as long as your `.env` file is present and correctly filled out, you should not need to personalize the code in any way to get it working.
 
-**Note:** It is possible to store your WRDS password in .env, but you do not need to and I recommend you don't.
-Instead, the wrds library will prompt you for your password the first time you connect,
-then will store it in a secure .pgpass file on your computer for future logins.
-This is better than having you type the password in cleartext into the .env file.
+What about your WRDS password?
+The code will prompt you for this the first time you connect to WRDS,
+then (if you approve) it will store it in a secure .pgpass file on your computer for future logins.
 
-If you are prompted for your WRDS password every time you run the code, 
-it usually means the `.pgpass` file was not created correctly.
-This is usually easy to troubleshoot and I can help if needed.
-
----
-
-## 4. Opening and running notebook files
-
-### Background
+### 4. Opening and running notebook files
 
 Once you have set up the Conda environment and your credentials file, you can run any Python code and expect it to match my results.
-For this class, our code examples are contained in notebook files, which require some explanation if you are not familiar.
+For this class, our code examples are contained in notebook files, which are files that include both blocks of code, results from that code including figures, and blocks of text discussing the code.
 
-Notebooks are files that include both blocks of code, results from that code including figures, and blocks of text discussing the code.
-These files are viewed through web browsers like a webpage.
-To use them, you first use the `jupyter notebook` command to start a tiny server running on your own computer that can talk to a web browser and tell it what to display.
+The easiest way to open notebook files is through VSCode, which many of you have probably used in previous classes. (Many other IDEs also provide similar functionality.) Just open the folder where you copied our course materials and you will be able to navigate to the notebook you want in the window to the left. The first time you run the code, you will also have to select the virtual environment you created in the earlier step.
+
+The other possible way to view the files is through web browsers like a webpage.
+To do this, you first use the `jupyter notebook` command to start a tiny server running on your own computer that can talk to a web browser and tell it what to display.
 Once that server is running, you can use a web browser to navigate and open Jupyter files.
+This approach is a bit more complex but gives a better feel of what the notebook is "meant" to look like.
 
-### Steps to follow
+1. Open a terminal
+2. Navigate to the repository directory
+3. Activate the environment: `conda activate FIN657`
+4. Launch jupyter: `jupyter notebook`
+5. Look for the browser window that opens up. If one does not open automatically, find the URL that appears in the output of the previous command, and paste it into a browser window.
+6. Navigate to the file that you want and click once to open.
+7. When finished, you can close this file and use the earlier tab to navigate to a different one if desired.
+8. When you are completely done, close all the browser windows that have opened up, go back to the terminal from earlier, kill the notebook server by entering `Ctrl+C`, and exit the terminal window.
 
-To open, edit, and run a notebook, do the following:
+### Cloud systems other than Colab
 
-(1) Open a terminal
-
-(2) Navigate to the repository directory
-
-(3) Activate the environment:
-
-    conda activate FIN657
-
-(4) Launch jupyter: 
-
-    jupyter notebook
-
-(5) Look for the browser window that opens up. If one does not open automatically, find the URL that appears in the output of the above command, and paste it into a browser window.
-
-(6) Navigate to the file that you want and click once to open.
-
-(7) When finished, you can close this file and use the earlier tab to navigate to a different one if desired.
-
-(8) When you are completely done, close all the browser windows that have opened up, go back to the terminal from earlier, kill the notebook server by entering `Ctrl+C`, and exit the terminal window.
-
----
-
-## A word about Binder
-
-Binder is a free online environment that lets you launch and run code directly from a GitHub repository like this one.
-It can be useful for previewing how our notebooks are structured and how the code is meant to work once you are set up locally.
-
-However, Binder should be treated as a public and untrusted environment. 
-It does not provide security guarantees appropriate for handling secrets.
-So, as a matter of standard security practice, 
-**you should never enter confidential information into Binder**,
-including usernames, passwords, or API keys (and this may even violate terms of service for the databases we use). 
-
-For this reason, any use of Binder with this repository should be limited to code that does not require downloading protected data. 
-Any code that requires credentials should be run locally using a .env file as described above.
-This page does not include instructions on using Binder, to avoid encouraging credential use in an environment that is not designed for it.
-
----
+There are several systems like Colab that offer cloud-based viewing and execution of notebook files (e.g. Binder).
+However, I *strongly recommend against* using any other systems.
+Google Colab has a Secrets tab that can reliably store your secret database credentials in a secure way.
+With other systems, you will have to type them into the code itself, and then it is much harder to be confident about their security.
 
 ## Licensing
 

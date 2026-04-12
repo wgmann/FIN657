@@ -9,6 +9,6 @@ To use this repo, you can either open the notebooks in Google Colab or run them 
     python -m ipykernel install --user --name FIN657 --display-name "FIN657 (conda)"
     cp .env.example .env
 
-...and add WRDS username and FRED API to .env. 
+...and add WRDS username and FRED API key to .env. 
 
 Then, either enter `jupyter notebook` in the terminal (from the same folder as above, with your Conda environment activated), or else open the folder in VSCode or your favorite IDE. Navigate to any notebook file to open and run it.

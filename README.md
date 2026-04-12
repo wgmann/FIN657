@@ -1,6 +1,6 @@
 This repository contains course materials for FIN 657 taught by William Mann at Emory University. 
 See the [landing page](https://wgmann.github.io/FIN657) for more information.
-To use this repo:
+To use this repo, you can either open the notebooks in Google Colab or run them locally. To run locally:
 
     git clone https://github.com/wgmann/FIN657
     cd FIN657

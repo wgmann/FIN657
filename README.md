@@ -9,8 +9,6 @@ To use this repo:
     python -m ipykernel install --user --name FIN657 --display-name "FIN657 (conda)"
     cp .env.example .env
 
-...add WRDS username and FRED API to .env, then
+...and add WRDS username and FRED API to .env. 
 
-    jupyter notebook
-
-...and navigate to any notebook file to run it.
+Then, either enter `jupyter notebook` in the terminal (from the same folder as above, with your Conda environment activated), or else open the folder in VSCode or your favorite IDE. Navigate to any notebook file to open and run it.

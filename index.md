@@ -43,9 +43,12 @@ GitHub Codespaces provides a cloud-based development environment that automatica
 2. Click the green "Code" button, select "Codespaces", and click "Create codespace on main".
 3. The system will prompt you to enter the WRDS_USERNAME and FRED_API_KEY that you obtained above.
 4. The first time you launch the codespace, you will need to wait 10-15 minutes for the environment to build.
-5. Then your browser will open a web version of VSCode, and you can navigate to any of our notebooks and run the code. 
+5. Then your browser will open a web version of VSCode, and you can navigate to any of our notebooks and run the code.
 
-## Option 2: Run notebooks on local computer (advanced)
+For those who already use VSCode locally, you can also connect to your codespace from there instead of the browser: open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`), type "Connect to Codespace", and select the codespace you just created. 
+This is a middle ground between a completely browser-based approach (above) and a completely local approach (below).
+
+## Option 2: Run notebooks locally (advanced)
 
 Your own computer can easily run all the code that we use in class if you install a few components that it will look for. This takes a bit more work, but gives a much better experience after that.
 

@@ -48,6 +48,8 @@ GitHub Codespaces provides a cloud-based development environment that automatica
 For those who already use VSCode locally, you can also connect to your codespace from there instead of the browser: open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`), type "Connect to Codespace", and select the codespace you just created. 
 This is a middle ground between a completely browser-based approach (above) and a completely local approach (below).
 
+**Note about other cloud systems:** Github Codespaces is our preferred cloud-based system, but there are many popular alternatives with similar functionality (e.g. Binder or Colab). If you use any such system, please be careful at all times with your database credentials. Only enter them into an appropriate secrets-handling system, not into the text of the notebook file itself. On some of these systems (including Binder) there is no secrets handler at all, in which case you should not use that system to run any code from this class that connects to a database.
+
 ## Option 2: Run notebooks locally (advanced)
 
 Your own computer can easily run all the code that we use in class if you install a few components that it will look for. This takes a bit more work, but gives a much better experience after that.

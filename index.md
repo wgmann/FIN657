@@ -39,8 +39,8 @@ GitHub Codespaces provides a cloud-based development environment that automatica
 
 (You will need to create a free GitHub account if you don't already have one, but this is strongly recommended anyway. If you really don't want to create a GitHub account, see the next section and download the repo as a ZIP file.)
 
-1. Fork this repository to your own GitHub account (click "Fork" in the top-right corner of the repository page). 
-2. Click the green "Code" button, select "Codespaces", and click "Create codespace on main".
+1. Open this repository on GitHub in your browser.
+2. Click the green "Code" button, select "Codespaces", and click "Create codespace on main" to create your own codespace for this repository.
 3. The system will prompt you to enter the WRDS_USERNAME and FRED_API_KEY that you obtained above.
 4. The first time you launch the codespace, you will need to wait 10-15 minutes for the environment to build.
 5. Then your browser will open a web version of VSCode, and you can navigate to any of our notebooks and run the code.

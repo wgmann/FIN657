@@ -79,11 +79,7 @@ Your own computer can easily run all the code that we use in class if you instal
     FRED_API_KEY=abc123  
     WRDS_USERNAME=johndoe  
     ```  
-    The `load_dotenv()` function that appears at the start of every notebook will load this information automatically.
-    
-    What about your WRDS password?
-    The code will prompt you for this the first time you connect to WRDS,
-    then (if you approve) it will store it in a secure .pgpass file on your computer for future logins.
+    The `load_dotenv()` function that appears at the start of every notebook will load this information automatically.  
 5. Open and run notebooks (`.ipynb` files): If using VSCode, then just open the repo directory you created, select the FIN657 kernel (if this does not happen automatically), and navigate to any file to open and run it.  
     You can also avoid using VSCode, and get a slightly better visual experience, by opening the notebooks directly in a browser window. However, the commands for this are a bit clunky:
     - Make sure your terminal window is running from inside the directory you created earlier, with the virtual environment activated.

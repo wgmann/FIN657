@@ -1,14 +1,6 @@
 This repository contains course materials for FIN 657 taught by William Mann at Emory University. 
-See the [landing page](https://wgmann.github.io/FIN657) for more information.
-To use this repo, you can either open the notebooks in Google Colab or run them locally. To run locally:
 
-    git clone https://github.com/wgmann/FIN657
-    cd FIN657
-    conda env create -f environment.yml
-    conda activate FIN657
-    python -m ipykernel install --user --name FIN657 --display-name "FIN657 (conda)"
-    cp .env.example .env
-
-...and add WRDS username and FRED API key to .env. 
-
-Then, either enter `jupyter notebook` in the terminal (from the same folder as above, with your Conda environment activated), or else open the folder in VSCode or your favorite IDE. Navigate to any notebook file to open and run it.
+**Students in this course are required to run the code** contained in this repository in order to understand course concepts and complete homework assignments.
+The easiest way to get started is to use GitHub Codespaces, which automatically sets up everything you need. 
+You can also set up your own computer to run the code locally.
+See the [landing page](https://wgmann.github.io/FIN657) for detailed setup instructions. 

@@ -13,6 +13,7 @@
 !/LICENSE
 !/LICENSE-CODE
 !/.github/
+!.devcontainer/
 !_config.yml
 !environment.yml
 !requirements.txt

@@ -13,11 +13,13 @@
 !/LICENSE
 !/LICENSE-CODE
 !/.github/
-!.devcontainer/
 !_config.yml
 !environment.yml
 !requirements.txt
 !.env.example
+!.devcontainer/
+!.devcontainer/devcontainer.json
+!.devcontainer/Dockerfile
 
 # --- whitelist course content, but keep some files commented out until the appropriate point in the semester ---
 !Emory_small.png

@@ -6,6 +6,10 @@
   },
   "customizations": {
     "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "jupyter.jupyterServerType": "local"
+      },
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
@@ -14,7 +18,7 @@
       ]
     }
   },
-  "postCreateCommand": "pip install --upgrade pip && pip install pandas fredapi wrds arch-py notebook matplotlib python-dotenv scikit-learn",
+  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && python -m pip install --upgrade pip && python -m pip install -e . ipykernel && python -m ipykernel install --user --name fin657 --display-name 'Python (FIN657)'",
   "remoteUser": "vscode",
   "forwardPorts": [8888],
   "portsAttributes": {

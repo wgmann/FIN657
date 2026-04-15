@@ -5,4 +5,5 @@ arch
 notebook
 matplotlib
 python-dotenv
+ipykernel
 scikit-learn

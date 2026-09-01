@@ -1,0 +1,40 @@
+# --- Deny-all by default ---
+*
+
+# --- allow all directories at every depth
+!**/
+# --- but explicitly ignore this folder that is created by Pycharm IDE
+.idea/
+
+# --- allow repo control and config files
+!/.gitignore
+!/README.md
+!/index.md
+!/LICENSE
+!/LICENSE-CODE
+!/.github/
+!_config.yml
+!environment.yml
+!requirements.txt
+!.env.example
+!.devcontainer/
+!.devcontainer/devcontainer.json
+!.devcontainer/Dockerfile
+
+# --- allow course content, but keep some files commented out until the appropriate point in the semester ---
+!Emory_small.png
+!Week 1 - MA smoothing and seasonal decomposition/Preliminary.ipynb
+!Week 1 - MA smoothing and seasonal decomposition/Preliminary.pdf
+!Week 1 - MA smoothing and seasonal decomposition/Moving-average smoothing.ipynb
+!Week 1 - MA smoothing and seasonal decomposition/Moving-average smoothing.pdf
+!Week 2 - Exponential smoothing/Exponential smoothing.ipynb
+!Week 2 - Exponential smoothing/Exponential smoothing.pdf
+!Week 3 - AR1 processes and unit root processes/AR1 and unit root processes.ipynb
+!Week 3 - AR1 processes and unit root processes/AR1 and unit root processes.pdf
+!Week 4 and 5 - The ARMA framework/ARMA.pdf
+!Week 4 and 5 - The ARMA framework/ARMA part 1 - Simulation and estimation.ipynb
+!Week 4 and 5 - The ARMA framework/ARMA part 2 - Model selection.ipynb
+!Week 4 and 5 - The ARMA framework/ARMA part 3 - Forecasting.ipynb
+!Week 4 and 5 - The ARMA framework/ARMA part 4 - Trends and seasonality.ipynb
+!Week 7 and 8 - GARCH/Volatility modeling.pdf
+!Week 7 and 8 - GARCH/Volatility modeling.ipynb

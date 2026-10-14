@@ -1,0 +1,251 @@
+\documentclass[t,12pt]{beamer}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage[utf8x]{inputenc}
+\usepackage[labelfont=bf,justification=justified]{caption}
+\usepackage{subcaption}
+\usepackage{fixltx2e}
+\usepackage{setspace}
+\usepackage{arydshln}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{chngpage}
+\usepackage{comment}
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetheme{Emory}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{\insertshortinstitute}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{navigation symbols}{}
+
+\titlegraphic{\includegraphics[width=0.3\textwidth]{/home/william/Emory.png}}
+
+\begin{document}
+
+\title[Exponential smoothing]{Exponential smoothing}
+\author{\vspace{0.35in} \\ {\fontfamily{ppl}\selectfont William Mann} \vspace{-0.35in}}
+
+\date{}
+\maketitle
+
+	\begin{frame}[c]
+	\vfill
+	\centerline{Simple exponential smoothing}
+	\vfill
+	\end{frame}
+
+	\begin{frame}[c]{Simple exponential smoothing}
+	Exponential smoothing is a family of weighted-average methods.
+	\\
+	The simplest example is called \textbf{simple} exponential smoothing:
+	\begin{itemize}
+	\medskip
+	\item First you make a forecast $F_1$ about the very first observation $y_1$.
+	\smallskip
+	\item After you observe $y_1$, your forecast of $F_2$ is given by
+	$$
+	F_2 = \alpha y_1 + (1-\alpha) F_1
+	$$
+	\item Similarly, after you observe $y_2$, your next forecast is
+	$$
+	F_3 = \alpha y_2 + (1-\alpha) F_2
+	$$
+	and so forth.
+	\smallskip
+	\item The value of $\alpha$ is called a smoothing parameter.
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}[c]{Why is it called exponential smoothing?}
+	The procedure on the previous slide gives us this formula:
+	$$
+	F_{t+1} = \alpha \times \left[ y_t + (1-\alpha)y_{t-1} + (1-\alpha)^2y_{t-2} + ... \right]
+	$$
+	As time goes by, your initial forecast $F_1$ no longer matters.
+	\\ \bigskip
+	There is always much greater weight given to recent observations rather than past observations, but at the same time,
+	the process ``remembers'' a very long history of information about $y_t$.
+	\\ \bigskip
+	This approach achieves a lot for the cost of only one parameter $\alpha$.
+	\end{frame}
+
+	\begin{frame}[c]{Implementation: Choice of initial forecast}
+	How to choose the initial forecast $F_1$? This should not be a big issue.
+	\begin{itemize}
+	\medskip
+	\smallskip
+	\item Any different choice of $F_1$ will give you slightly different results, but it should not be a big issue in practice.
+	\smallskip
+	\item If two reasonable choices yield very different results, something may be going wrong, or you may just need more data.
+	\item The simplest choice is to ``look ahead'' and just use $y_1$.
+	\\ This is what we will do when implementing by hand.
+	\smallskip
+	\item In this case the first forecast is slightly cheating, and we should ignore it when assessing the performance of the model.
+	\smallskip
+	\item Software will often ``backcast'' from the early observations.
+	\\ Every common approach involves looking ahead in some way.
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}[c]{Implementation: Choice of smoothing parameter $\alpha$}
+	How to choose $\alpha$? This is a more important issue.
+	\begin{itemize}
+	\medskip
+	\item Notice that $\alpha$ is the amount that we change our forecast in response to a new observation.
+	So actually a higher $\alpha$ makes our forecasts \emph{less} smooth.
+	(This is a bit confusing but is standard!)
+	\smallskip
+	\item If the goal is just to visualize data, it's common to just try values of $\alpha$ until one looks reasonable.
+	\smallskip
+	\item If the goal is to forecast, then $\alpha$ is typically chosen to minimize the sum of squared one-step forecast errors,
+	$
+	\sum_t (y_t - F_t)^2
+	$.
+	\smallskip
+	\item 
+	Although it looks much like a regression, there is no simple formula for this.
+	Instead, search numerically over values of $\alpha$.
+	\end{itemize}
+	\medskip
+	See examples on Canvas.
+	\end{frame}
+
+	\begin{frame}[c]
+	\vfill
+	\centerline{Double exponential smoothing}
+	\centerline{(also called Holt's method)}
+	\vfill
+	\end{frame}
+
+	\begin{frame}[c]{Double exponential smoothing}
+	When a series is trending in one direction, simple exponential smoothing will always generate forecasts that lag behind.
+	\\ \medskip
+	Double exponential smoothing keeps track of both the \emph{level} of the series (as before), and also its \emph{trend}.
+	\\ \medskip
+	The second part gives a sense of where the series is going.
+	This improves forecast accuracy for data with slowly-evolving trends.
+	\\ \medskip
+	The formal framework is as follows:
+	\begin{align*}
+	L_t \quad &= \quad \alpha Y_t \, + \, (1-\alpha)(L_{t-1} + T_{t-1})
+	\\
+	T_t \quad &= \quad \beta (L_t - L_{t-1}) \, + \, (1-\beta) T_{t-1}
+	\\
+	F_{t+1} \quad &= \quad L_t \, + \, T_t
+	\end{align*}
+	{\footnotesize (There is also a popular version with multiplicative trends, but it is easier and almost identical to just log-transform the data in the above approach.)}
+	\end{frame}
+
+	\begin{frame}[c]{Double exponential smoothing: Implementation}
+	How to set the initial values of the forecast components, $L_1$ and $T_1$?
+	\begin{itemize}
+	\item As before, we can set $L_1 = Y_1$. 
+	For $T_1$, a common choice is $T_1 = Y_2 - Y_1$, and this is what we will do in our examples. 
+	\item Most software follows an approach based on fitting a simple regression model to the early data.
+	\item As with SES, this choice generally should not make a very big difference to your forecasts.
+	\end{itemize}
+	\medskip
+	How to choose the parameters $\alpha$ and $\beta$?
+	\begin{itemize}
+	\item Again, just minimize the sum of squared one-step forecast errors.
+	\item We just have to search over two parameters instead of one.
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}[c]
+	\vfill
+	\centerline{Triple exponential smoothing}
+	\centerline{(also called the Holt-Winters approach)}
+	\vfill
+	\end{frame}
+
+	\begin{frame}[c]{Triple exponential smoothing, aka Holt-Winters}
+	Simple exponential smoothing captures the current \emph{level} of a series. 
+	\\
+	Double exponential smoothing learns which way it's \emph{trending}.
+	\\ 
+	The other big component of most economic data is \emph{seasonality}.
+	\\ \bigskip
+	Neither simple nor double smoothing can capture seasonality,
+	\\ but we can extend the method one more time to do so.
+	\\ \bigskip
+	The result is called \textbf{triple exponential smoothing} or the \textbf{Holt-Winters method}, or sometimes just \textbf{Winters method}.
+	\\ \bigskip
+	This has been an extremely popular and effective forecasting method for many decades now.
+	\end{frame}
+
+	\begin{frame}[c]{Triple exponential smoothing: Framework}
+	\vspace{-0.4in}
+	\begin{align*}
+	L_t \quad &= \quad \alpha (Y_t-S_{t-p}) \,\, + \,\, (1-\alpha)(L_{t-1} + T_{t-1})
+	\\
+	T_t \quad &= \quad \beta (L_t - L_{t-1}) \,\, + \,\, (1-\beta) T_{t-1}
+	\\
+	S_t \quad &= \quad \delta (Y_t - L_t) \,\, + \,\, (1-\delta) S_{t-p}
+	\\
+	F_t \quad &= \quad L_{t-1} \,\, + \,\, T_{t-1} \,\, + \,\, S_{t-p}
+	\end{align*}
+	We will not try to implement this by hand. 
+	The extra math, and the question of how exactly to initialize $S_t$, are tricky but not interesting.
+	\\ \medskip
+	The main takeaway is that this approach can capture rich behavior, 
+	\\ and can quickly generate accurate forecasts in most practical settings,
+	\\ while estimating just three parameters ($\alpha$, $\beta$, $\delta$).
+	\\ \smallskip
+	{\footnotesize
+	Again, there is also a version with \emph{multiplicative} seasonality, 
+	in which we divide and multiply by $S_t$ and $S_{t-p}$, instead of subtracting and adding.
+	For some reason this version is very popular.
+	In my experience the two versions give similar results.}
+	\end{frame}
+
+	\begin{frame}[c]{Exponential smoothing: Summary}
+	\begin{itemize}
+	\item
+	Exponential-smoothing is a very popular forecasting approach.
+	\\ But notice that we derived it in a very ad-hoc way.
+	\smallskip
+	\item
+	As long as we are \emph{just} forecasting, this may not be a problem.
+	\smallskip
+	\item
+	But there is less clear guidance for other goals, such as building prediction intervals, connecting with economic models, etc.
+	\smallskip
+	\item
+	These questions eventually require us to model the \emph{process} that generates the data, as is usually done in statistics.
+	\smallskip
+	\item
+	From this point forward, we will develop such a framework.
+	\\ It is often called the ARMA framework, for reasons we will see.
+	\smallskip
+	\item
+	The point is not to generate better forecasts (it won't), 
+	\\ but rather to give a clearer understanding of what we are doing.
+	\end{itemize}
+	\end{frame}
+
+\end{document}

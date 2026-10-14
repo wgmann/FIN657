@@ -1,0 +1,130 @@
+\documentclass[t,12pt]{beamer}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage[utf8x]{inputenc}
+\usepackage[labelfont=bf,justification=justified]{caption}
+\usepackage{subcaption}
+\usepackage{fixltx2e}
+\usepackage{setspace}
+\usepackage{arydshln}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{chngpage}
+\usepackage{comment}
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetheme{Emory}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{\insertshortinstitute}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{navigation symbols}{}
+
+\titlegraphic{\includegraphics[width=0.3\textwidth]{/home/william/Emory.png}}
+
+\begin{document}
+
+\title[Moving-average smoothing]{Moving-average smoothing}
+\author{\vspace{0.35in} \\ {\fontfamily{ppl}\selectfont William Mann} \vspace{-0.35in}}
+
+\date{}
+\maketitle
+
+	\begin{frame}[c]
+	\vfill
+	\centerline{Moving-average smoothing}
+	\vfill
+	\end{frame}
+
+	\begin{frame}[c]{Features of economic series: Trend, cycle, residual}
+	\begin{itemize}
+	\item
+	It is common to think of economic series as consisting of a long-term trend, a seasonal cycle, and a residual.
+	\medskip
+	\item
+	A popular way to visualize and understand a data series is to try to decompose it into these components.
+	\begin{itemize}
+	\smallskip
+	\item
+	To be clear, there are many potential ways to do this. 
+	\item
+	They should all be interpreted carefully, as visualization tools, 
+	\\ not necessarily as revealing any reliable statistical patterns.
+	\end{itemize}
+	\medskip
+	\item
+	The most common decomposition is based on moving averages.
+	\\ We will overview this approach today.
+	\end{itemize}
+	\end{frame}
+
+	\begin{frame}[c]{Centered moving averages}
+	A \textbf{centered moving average} of order $m$ is as follows:
+	\\ \medskip
+	If $m$ is odd, then let $k = \frac{m-1}{2}$, and
+	$$
+	CMA_t \quad = \quad \frac{1}{m} \times (y_{t-k} + ... + y_{t+k})
+	$$
+	If $m$ is even, then let $k = \frac{m}{2}$, and
+	$$
+	CMA_t \quad = \quad \frac{1}{m} \times \left( \frac{1}{2} y_{t-k} + y_{t-k+1} + ... + y_{t+k-1} + \frac{1}{2} y_{t+k} \right)
+	$$
+	Centered moving averages are a common way to visualize the ``trend'' component of a data series.
+	A common choice of $m$ is the order of seasonality in the data, for example $m=12$ for monthly data.
+	\end{frame}
+
+	\begin{frame}[c]{Seasonal component}
+	After calculating the series of CMAs, a common approach to modeling the seasonal component of a time series is as follows:
+	\begin{itemize}
+	\medskip
+	\item Calculate a ``detrended'' series as $y_{t,\text{detrend}} = y_t - CMA_t$.
+	\smallskip
+	\item For each stage $l$ within a cycle, calculate a seasonal average $\bar{y}_l$ as the average of $y_{t,\text{detrend}}$ across all the $l$ observations.
+	\smallskip
+	\item For example, if the data is monthly, then $\bar{y}_l$ is the average of $y_{t,\text{detrend}}$ for a specific month across all years in the sample.
+	\smallskip
+	\item The seasonal component for each stage $l$ is its seasonal average, minus the average of all the seasonal averages.
+	\end{itemize}
+	\medskip
+	Finally, the residual is $y_t$ minus the trend and seasonal components.
+	\\ \smallskip See example on Canvas.
+	\end{frame}
+
+	\begin{frame}[c]{Variations on the moving-average smoothing}
+	The simple approach described above is very common in practice, 	
+	\\ but you will also see many variations on it. Two examples are:
+	\begin{itemize}
+	\medskip
+	\item \underline{Trailing averages}: When we want to build \emph{forecasts}, we don't have the future values and must average only over past values.
+	\\ This often leads us to also use weighted averages (next point).
+	\medskip
+	\item \underline{Weighted averages}: In a two-sided moving average, it is common to weight the central observation by the most.
+	In a trailing average, it is common to weight the \emph{most recent} observation by the most, to put the emphasis on the newest data.
+	\end{itemize}
+	\medskip
+	Next week we will cover exponential smoothing, a popular approach that uses a trailing average with a specific weighting scheme.
+	\end{frame}
+
+\end{document}

@@ -1,0 +1,310 @@
+\documentclass[t,12pt]{beamer}
+
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage[utf8x]{inputenc}
+\usepackage[labelfont=bf,justification=justified]{caption}
+\usepackage{subcaption}
+\usepackage{fixltx2e}
+\usepackage{setspace}
+\usepackage{arydshln}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{chngpage}
+\usepackage{comment}
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetheme{Emory}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{\insertshortinstitute}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{navigation symbols}{}
+
+\titlegraphic{\includegraphics[width=0.3\textwidth]{/home/william/Emory.png}}
+
+\begin{document}
+
+\title[AR(1) and unit-root processes]{AR(1) and unit-root processes}
+\author{\vspace{0.35in} \\ {\fontfamily{ppl}\selectfont William Mann} \vspace{-0.35in}}
+
+\date{}
+\maketitle
+
+\begin{frame}[c]{AR(1) process and random-walk process}
+AR(1) means ``autoregressive process of order 1''. It looks like this:
+$$
+y_t \quad = \quad \mu \quad + \quad \phi y_{t-1} \quad + \quad u_t
+$$
+where each $u_t$ is an independent draw from $\text{N}(0,\sigma^2)$.
+\\ \smallskip
+An AR(1) process eventually stabilizes around an average, $\frac{\mu}{1-\phi}$. %
+\\ \medskip
+If $\phi=1$, we get a \textbf{random walk}, an example of a \textbf{unit-root} process:
+$$
+y_t \quad = \quad \mu \quad + \quad y_{t-1} \quad + \quad u_t
+$$
+This process does \emph{not} have any long-run ``average.''
+\begin{itemize}
+\item This is a very common case with financial data.
+\item It also creates some challenges for statistical modeling!
+\\ To understand why, we need the idea of a ``stationary'' process...
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Weakly stationary process (or covariance stationary)}
+\label{weakly_stationary}
+A process $y$ is \textbf{weakly stationary} (or \textbf{covariance stationary}) if
+\begin{itemize}
+\medskip
+\item $\mathbb{E}[y_t]$ does not depend on $t$,
+\item $Var(y_t)$ does not depend on $t$,
+\item $\text{Cov}(y_t,y_s)$ depends only on the distance $t-s$.
+\end{itemize}
+\bigskip
+In words, this means that $y$ follows a stable distribution at all times.
+\\ \vfill
+{\footnotesize
+From now on, I will use ``stationary'' as a shorthand for ``weakly stationary,''
+\\
+and will use ``nonstationary'' to mean ``not weakly stationary,''
+\\ 
+Other fields outside economics sometimes use these terms differently.
+}
+\end{frame}
+
+\begin{frame}{Stationary and nonstationary examples}
+An AR(1) with $\phi<1$ is stationary:  
+\begin{align*}
+\mathbb{E}[y_t] \quad &= \quad \frac{\mu}{1-\phi}
+\\
+Var(y_t) \quad &= \quad \frac{\sigma^2}{1-\phi^2}
+\\
+Cov(y_t,y_s) \quad &= \quad \phi^{t-s} \times \frac{\sigma^2}{1-\phi^2}
+\end{align*}
+A random walk is \emph{not} stationary:
+\begin{align*}
+\mathbb{E}[y_t] \quad &= \quad t \times \mu \quad + \quad y_0
+\\
+Var(y_t) \quad &= \quad t \times \sigma^2
+\\
+\text{Cov}(y_t,y_s) \quad &= \quad \min(t,s) \times \sigma^2
+\end{align*}
+\end{frame}
+
+\begin{frame}[c]{The difference of a random walk is stationary}
+\label{difference_stationary}
+The \emph{difference} of a random walk \emph{is} stationary.
+\\ \medskip
+To see this, use $\Delta y_t$ to represent $y_t - y_{t-1}$. Then we can write
+$$
+\Delta y_t \quad = \quad \mu + u_t
+$$
+and from this we can see that
+\begin{align*}
+\mathbb{E}[\Delta y_t] \quad &= \quad \mu
+\\
+Var(\Delta y_t) \quad &= \quad \sigma^2
+\\
+\text{Cov}(\Delta y_t, \Delta y_s) \quad &= \quad 0
+\end{align*}
+This is an important fact that we will use a lot.
+\end{frame}
+
+\begin{frame}[c]{Why is stationary data important?}
+\begin{itemize}
+\item Statistics is all about \emph{estimating} averages, variances, etc.
+\\ This implicitly assumes that such numbers actually exist!
+\medskip
+\item For a nonstationary process, they do not.
+\\ So the results of such analysis would not be meaningful.
+\\ We have to find some other approach instead.
+\medskip
+\item 
+What happens if we (mistakenly) ignore this issue,
+\\ and perform our usual analysis using nonstationary data?
+\medskip
+\item The computer will not stop us.
+\\ It will still run the analysis and give us (meaningless) results.
+\medskip
+\item Instead, we have to check for nonstationary data ourselves, and figure out what to do about it.
+This is our next topic.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{Testing for unit roots}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Types of nonstationary process}
+\begin{itemize}
+\item Statistical tests require a precise null and alternative hypothesis.
+\medskip
+\item In theory, there are many ways a process can be nonstationary.
+\\ Each type of nonstationary behavior requires its own test.
+\medskip
+\item
+In practice, the most plausible and common category of nonstationary processes is called \emph{unit root} processes.
+\medskip
+\begin{itemize}
+\item
+A unit-root process is one that is not stationary on its own,
+\\ but can be turned into a stationary process through differencing.
+\item As we saw earlier, a random walk process is one example.
+\end{itemize}
+\medskip
+\item So we will focus our attention on tests for unit-root behavior.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Estimating AR(1) and AR(p) processes}
+Unit root tests build on the following information:
+\\ \bigskip
+Recall the definition of an AR(1) process,
+$$
+y_t \quad = \quad \mu \quad + \quad \phi y_{t-1} \quad + \quad u_t
+$$
+Suppose you believe a data series follows an AR(1) process. 
+\\ How would you estimate $\phi$? Just regress $y_t$ on $y_{t-1}$.
+\\ \bigskip
+An AR(p) process is like an AR(1), with $p$ lags of $y$:
+$$
+y_t \, = \, \mu \, + \, \phi_1 y_{t-1} + \phi_2 y_{t-2} + ... + \phi_p y_{t-p} \, + \, u_t
+$$
+You can estimate all the $\phi$ at once, by running a multiple regression of $y_t$ on $y_{t-1},\dots,y_{t-p}$.
+See notebook on Canvas for examples.
+\end{frame}
+
+\begin{frame}[c]{Unit root tests: Dickey-Fuller}
+The Dickey-Fuller unit root test assumes the data are AR(1), 
+\\ and tests the null $\phi=1$ against the alternative $\phi < 1$.
+\begin{itemize}
+\item Write out $\Delta y_t$, which is stationary under either hypothesis:
+$$
+\Delta y_t \quad = \quad \mu \quad + \quad (\phi - 1) \times y_{t-1} \quad + \quad u_t
+$$
+\vspace{-0.2in}
+\item Estimate $\phi-1$ by regressing $\Delta y_t$ on $y_{t-1}$.
+\\ Then we want to test whether this coefficient is negative.
+\\ If the $p$-value is low enough, we can reject that $\phi=1$.
+\item The test statistic is the $t$-stat from the regression.
+\\ But, the typical regression p-values will not be correct:
+\\ Sampling distribution is nonstandard under the null $\phi=1$.
+\item Refer to special tables of critical values to check significance.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Unit root tests: Augmented Dickey-Fuller (ADF)}
+Same approach, but control for lags of $\Delta y_t$ in the regression,
+\\ allowing the process to be any AR(p) instead of just AR(1).
+\\ \medskip
+For example, we can allow $y$ to be AR(2) by running
+$$
+\Delta y_t \quad = \quad \mu \quad + \quad (\phi - 1) \times y_{t-1} \quad + \quad \delta \times \Delta y_{t-1} \quad + \quad u_t
+$$
+Each extra lag allows more general dynamics in $y$.
+\begin{itemize}
+\item How far to go with this? There is no simple rule. 
+\item One common procedure is to select based on information criteria such as AIC or BIC (see definitions next week).
+\item Most software allows you to automate this process.
+\end{itemize}
+\medskip
+In practice, ADF is the most common unit-root test.
+\end{frame}
+
+\begin{frame}[c]{Deterministic trend as alternative hypothesis}
+\vspace{-0.15in}
+In the tests that we described just now:
+\begin{itemize}
+\item the null hypothesis was that the process has a unit root, 
+\item the alternative was that the process is stationary.
+\end{itemize}
+\medskip
+Another potential behavior is a \emph{deterministic} trend.
+\begin{itemize}
+\item This is a trend that is a simple function of time.
+\item Also called \emph{trend-stationary} behavior.
+\end{itemize}
+\medskip
+This can be specified as the alternative in an ADF test by
+\begin{itemize}
+\item adding a time trend in the regression,
+\item or, running the test on detrended data.
+\end{itemize}
+(In practice, just specify the appropriate option in software.)
+\\ \medskip
+However, deterministic trends are seen as being rare in practice.
+\end{frame}
+
+\begin{frame}[c]{Unit root as the alternative: KPSS}
+The KPSS test reverses the ADF procedure:
+\\ Stationary data is the null, unit root is the alternative.
+\\ Hence we hope to \emph{not} reject the null under this test.
+\\ \bigskip
+The derivation is a bit too involved to describe here,
+\\ but it's implemented in any statistical software.
+\\ \bigskip
+KPSS and ADF are often used together.
+\\ We hope they give consistent answers (one reject, one fail to reject).
+\\ But there is no guarantee of this. Both can reject, or fail to reject.
+\\ \bigskip\bigskip
+{\footnotesize (KPSS $=$ Kwiatkowski, Phillips, Schmidt, and Shin.)}
+\end{frame}
+
+\begin{frame}[c]{General comments about unit root tests}
+\begin{itemize}
+\item Statistical tests might give you the impression that they are definitive and conclusive, but they are not. No test is perfect. 
+\medskip
+\item Unit root tests in particular have low power. 
+\\ This means they often struggle to give us any clear conclusion.
+\medskip
+\item By the same token, these tests do not give us a cookbook that we can follow to tell us exactly how to handle a time series.
+\medskip
+\item Instead, view them as a way to check intuition that you already have from background knowledge or economic theory. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Deal with unit-root data by differencing}
+The standard thing to do with unit-root data is to difference it.
+\begin{itemize}
+\smallskip
+\item After one or more differencing steps, the data will be stationary.
+\\ (In all our examples, one step will be enough.)
+\item Statistical analysis on this differenced data will be valid.
+\end{itemize}
+\medskip
+For example, instead of modeling the price of a stock or an index, 
+\\ we model its \emph{returns}, which are the difference of log price.
+\\ \medskip
+The major sacrifice is that you give up on modeling $y_t$ directly, 
+\\ and only attempt to explain the change $\Delta y_t$.
+\\ \medskip
+So, you don't want to difference data unless absolutely necessary.
+\\ \medskip
+But if the series has a unit root, you typically have no choice.
+\end{frame}
+
+\end{document}

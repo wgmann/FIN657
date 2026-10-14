@@ -1,0 +1,604 @@
+\documentclass[t,12pt]{beamer}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage[utf8x]{inputenc}
+\usepackage[labelfont=bf,justification=justified]{caption}
+\usepackage{subcaption}
+\usepackage{fixltx2e}
+\usepackage{setspace}
+\usepackage{arydshln}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{chngpage}
+\usepackage{comment}
+\usetikzlibrary{shapes,arrows}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+
+\usetheme{Emory}
+\makeatletter
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\beamer@ifempty{\insertshortinstitute}{}{\insertshortinstitute}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother
+
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{navigation symbols}{}
+
+\titlegraphic{\includegraphics[width=0.3\textwidth]{/home/william/Emory.png}}
+
+\begin{document}
+
+\title[The ARMA framework]{The ARMA framework}
+\author{\vspace{0.35in} \\ {\fontfamily{ppl}\selectfont William Mann} \vspace{-0.35in}}
+
+\date{}
+\maketitle
+
+\begin{frame}[c]{Outline of next two weeks}
+We will discuss several types of time-series processes:
+\begin{itemize}
+\smallskip
+\item AR(p): \emph{Autoregressive} process of order $p$.
+\item MA(q): \emph{Moving-average} process of order $q$.
+\item ARMA(p,q): Combination of $AR(p)$ and $MA(q)$.
+\end{itemize}
+\bigskip
+These can be combined to approximate any stationary process.
+\\ \bigskip
+This will us an alternative way to build forecasts, compared to the exponential-smoothing approach from before, 
+as well as a sound framework for any other analysis we might want to pursue.
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{AR and MA processes, and the Wold theorem}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{AR(p) process}
+Last week, we saw the idea of an AR(1) process:
+$$
+y_t \quad = \quad \mu \quad + \quad \phi y_{t-1} \quad + \quad u_t
+$$
+Every date $t$, the new value of $y_t$ is affected by today's shock, 
+\\ but also puts some weight $\phi$ on yesterday's $y_{t-1}$.
+\\ \bigskip
+We also saw the more general version, an AR(p) process:
+$$
+y_t \,\, = \,\, \mu \,\, + \,\, \phi_1 y_{t-1} \,\, + \,\, \phi_2 y_{t-2} \,\, + \,\, \dots \,\, + \,\, \phi_p y_{t-p} \,\, + \,\, u_t
+$$
+Recall that we can estimate the $\phi$ numbers by regression.
+\\ 
+AR(p) is one of the building blocks of the ARIMA framework.
+\end{frame}
+
+\begin{frame}[c]{MA(q) process}
+The other major building block of time series models is the moving-average or MA process. 
+An MA(1) looks like this:
+$$
+y_t \quad = \quad \mu \quad + \quad u_t \quad + \quad \theta u_{t-1}
+$$
+Like an AR process, there is persistence built into this process.
+\\ 
+Differently from AR, the persistence is through the shocks $u_t$.
+\\ \medskip
+In an MA(1) process, each shock affects today, and to a lesser extent tomorrow, then disappears from the process and no longer matters.
+\\ \medskip
+By contrast, in an AR process, each shock $u_t$ feeds into $y_t$, 
+\\ so it has a long-lived and slowly-decaying effect on future $y$.
+\\ \medskip
+Again, there can be more than one lag. A general MA(q) process is:
+$$
+y_t \,\, = \,\, \mu \,\, + \,\, u_t \,\, + \,\, \theta_1 u_{t-1} \,\, + \,\, \theta_2 u_{t-2} + \,\, \dots \,\, + \,\, \theta_q u_{t-q}
+$$
+\end{frame}
+
+\begin{frame}[c]{Wold representation theorem}
+AR and MA processes are useful building blocks, due to the following:
+\\ \medskip
+\emph{ \textbf{Theorem:} Any covariance-stationary process can be written as a sum of AR(p) and MA(q) processes, plus a non-random constant.}
+\\ \medskip
+That is, regardless of the true nature behind any process, 
+\\ we can always \emph{model} it accurately with something that looks like:
+\begin{equation*}
+y_t \quad = \quad \mu \, + \, 
+\underbrace{ \phi_1 y_{t-1} + \dots + \phi_p y_{t-p} }_{\text{AR(p) terms}}
+\, + \,
+\underbrace{ u_t + \theta_1 u_{t-1} + \dots + \theta_q u_{t-q} }_{\text{MA(q) terms}}
+\end{equation*}
+A process that combines AR(p) and MA(q) is called ARMA(p,q).
+\vfill
+{\scriptsize
+The theorem above is slightly paraphrased.
+The true theorem only says every stationary process can be written as an MA.
+But there is also a ``duality'' between AR and MA, meaning that each one can be converted into the other.
+So the choice between them is really just for convenience.
+}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{ACF and PACF patterns of AR and MA processes}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Autocovariances, autocorrelations, partial autocorrelations}
+For a stationary process, $Cov(y_t,y_s)$ depends only on $t-s$.
+\begin{itemize}
+\bigskip
+\item
+One way to say this is that $Cov(y_t,y_s) = \gamma_{s-t}$ for some numbers $\gamma_0,\gamma_1,\gamma_2,...$.
+The $\gamma$ are called the \textbf{autocovariances} of $y$.
+\medskip
+\item The \textbf{autocorrelations} of $y$ are $\tau_{s-t} = \gamma_{s-t} / \gamma_0$.
+\\
+Each $\tau_s$ is also the coefficient from regressing $y_t$ on $y_{t-s}$.
+\medskip
+\item The \textbf{partial autocorrelations} $\beta_{s-t}$ of $y$ are the coefficients from regressing $y_t$ on $y_{t-s}$ while controlling for the in-between $y$.
+\\ There is a formula for them too, but it's more complicted.
+\end{itemize}
+\bigskip
+Next slide: These numbers help us understand stationary processes.
+\end{frame}
+
+\begin{frame}[c]{ACF and PACF patterns in AR and MA processes}
+One way to understand a stationary process is through its \emph{autocorrelation function} (ACF) or \emph{partial autocorrelation fn} (PACF).
+\\ \medskip
+These are plots with lags of time on the horizontal axis, 
+\\ and autocorrelations or partial autocorrelations on the vertical.
+\\ \medskip
+These figures help us judge the AR and MA patterns in a process, 
+\\ because we know some theoretical benchmarks.
+Examples:
+\begin{itemize}
+\smallskip
+\item \textbf{AR(1)}: $ACF(h) = \phi^h$: a \emph{decaying} pattern; 
+\\ $PACF(h) = \phi$ if $h=1$, 0 otherwise: a \emph{cutoff} pattern.
+\smallskip
+\item \textbf{MA(1)}: $ACF(h) = \theta$ if $h=1$, 0 otherwise: a cutoff pattern;
+\\ $PACF(h) = \frac{\theta^h(-1)^{h+1}}{1+\theta^2+\dots+\theta^{2h}}$: an \emph{alternating} pattern.
+\end{itemize}
+\smallskip
+See examples in Python notebook posted online.
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{Estimating ARMA processes}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Estimating an AR($p$) process}
+Suppose you have a series of data from a stationary process,
+\\ and you think the process is described well by an AR($p$):
+$$
+y_t \,\, = \,\, \mu \,\, + \,\, \phi_1 y_{t-1} \,\, + \,\, \phi_2 y_{t-2} \,\, + \,\, \dots \,\, + \,\, \phi_p y_{t-p} \,\, + \,\, u_t
+$$
+How would you go about estimating the numbers $\phi_1$, $\phi_2$, ... $\phi_p$?
+\\ \medskip
+We've seen the answer before: Just run a regression. 
+\\ See examples on Canvas.
+\end{frame}
+
+\begin{frame}[c]{Estimating an MA($q$) process}
+Suppose you have a series of data from a stationary process,
+\\ and you think the process is described well by an MA($q$):
+$$
+y_t \,\, = \,\, \mu \,\, + \,\, u_t \,\, + \,\, \theta_1 u_{t-1} \,\, + \,\, \theta_2 u_{t-2} + \,\, \dots \,\, + \,\, \theta_q u_{t-q}
+$$
+How would you go about estimating the numbers $\theta_1$, $\theta_2$, ... $\theta_p$?
+\\ \bigskip
+Unfortunately, you \textbf{cannot} run any simple regression for this.
+\\ You can't actually observe the ``true'' shocks $u_t$ that appear above,
+\\ and you can't estimate them until you have an estimate of $\theta$.
+\\ \bigskip
+We use a different estimation method called \textbf{maximum likelihood}.
+\end{frame}
+
+\begin{frame}[c]{Maximum likelihood estimation}
+Maximum likelihood is an important approach in many settings. 
+\\ (We will see it again with volatility models in a few weeks.)
+\\ \bigskip The basic idea is this:
+\begin{itemize}
+\medskip
+\item Make an initial guess of all the model parameters:
+\\ $\mu$, $\sigma^2$, and any AR and MA terms $\phi_1,\phi_2,...,\theta_1,\theta_2,...$.
+\smallskip
+\item Calculate the \textbf{likelihood} (probability) that you would observe the data you did, if the parameters were equal to your guess.
+\smallskip
+\item Try different guesses until that likelihood is as high as possible.
+\end{itemize}
+\bigskip
+The parameter values that generate the highest likelihood of observing the true data are the \textbf{maximum likelihood estimate}.
+\end{frame}
+
+\begin{frame}[c]{The likelihood function}
+\begin{itemize}
+\item To implement MLE, you need to know the probability described in the prior slide, which is called the \textbf{likelihood function}. 
+\medskip
+\item For any standard ARMA process, the function is well-known.
+\\ You just have a computer find parameters to maximize it.
+\\ More often, you actually maximize the \emph{log} of the likelihood.
+\medskip
+\item Example: Here's the log likelihood function for an AR(1).
+\begin{align*}
+\mathscr{L} &= - \frac{T}{2}\ln(\sigma^2) - \frac{T}{2}\ln(2\phi) - \frac{1}{2}\ln\left(\frac{\sigma^2}{1-\phi^2}\right) 
+\\ & \quad - \frac{1-\phi^2}{2\sigma^2}\hat{u}_1^2 - \frac{1}{2\sigma^2}\sum_{t=2}^T \hat{u}_t^2
+\end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{After estimation: Measures of model quality}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Information criteria}
+An \emph{information criterion} compares models with each other:
+\begin{itemize}
+\medskip
+\item First estimate the model, and measure its \emph{fit} in the data. 
+\begin{itemize}
+\item For a linear regression, fit is measured by $R^2$. 
+\item When applying MLE, we use the likelihood function, evaluated at our best parameter estimates. 
+Higher value $=$ better fit.
+\item Most software reports the \emph{log} of the likelihood function, which is typically negative, so a \emph{less-negative} number is a better fit.
+\end{itemize}
+\medskip
+\item Build in some penalty to avoid \emph{overfitting}.
+\begin{itemize}
+\item The penalty should increase with the number of model terms.
+\item In linear regression, adjusted $R^2$ is an example of this.
+\end{itemize}
+\end{itemize}
+\medskip
+The two standard information criteria are AIC and BIC.
+\\ See next two slides and examples in Python notebook.
+\end{frame}
+
+\begin{frame}[c]{Akaike information criterion (AIC)}
+The AIC measure of a model is given by
+$$
+AIC \quad = \quad 2 \times k \quad - \quad 2 \times \mathscr{L}
+$$
+\begin{itemize}
+\vspace{-0.2in}
+\item $k$ is the number of parameters that were estimated.
+\begin{itemize}
+\item For an ARMA model, this is the number of AR and MA terms, plus 1 for $\sigma^2$, plus 1 if there was a constant term $\mu$.
+\item Example: ARMA(1,1) with a constant term would have $k=4$.
+\end{itemize}
+\medskip
+\item $\mathscr{L}$ is the maximum \emph{log} likelihood that we can achieve.
+\begin{itemize}
+\item This is part of the output from your MLE process.
+\end{itemize}
+\medskip
+\item You want to find the \textbf{smallest} possible AIC.
+\begin{itemize}
+\item Intuition: Higher $\mathscr{L}$ is good. Higher $k$ is bad.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Bayesian information criterion (BIC, SIC, SBC, or SBIC)}
+The BIC measure of a model is given by
+$$
+BIC \quad = \quad \ln(N) \times k \quad - \quad 2 \times \mathscr{L}
+$$
+\begin{itemize}
+\vspace{-0.2in}
+\item $N$ is the number of observations in the dataset,
+\\ everything else is as in the prior slide.
+\medskip
+\item Intuition: Just a different way of penalizing $k$.
+\medskip 
+\item There are deep statistical arguments for why the AIC and BIC look the way they do, but this is beyond the scope of class.
+\medskip
+\item Both are popular and should yield similar conclusions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{How to use information criteria}
+It's common to search over models to find the smallest AIC or BIC.
+\begin{itemize}
+\bigskip
+\item Combine common sense and judgment with this process.
+\begin{itemize}
+\item Many times, two different models will yield very similar AIC and BIC numbers. It may be that one model scores marginally better, but the other is more economically reasonable.
+\end{itemize}
+\medskip
+\item AIC and BIC only give \emph{relative} comparisons. 
+\\ There is no sense of a ``good'' or ``bad'' value to judge by.
+\begin{itemize}
+\item For \emph{overall} assessment of a model, you should instead check whether there are any remaining features of the data that seem important to capture.
+See next section.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{After estimation: Check for remaining time-series patterns}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Checking for time-series patterns}
+We are done with model selection, once we are satisfied that we have captured all the important time-series features of the data.
+\\ \bigskip
+To judge this, we examine the \emph{residuals} from the fitted models.
+\begin{itemize}
+\medskip
+\item Visually, look at ACF and PACF graphs of the residuals.
+\medskip
+\item Formally, we can apply statistical tests.
+\\ The most common choice is the Ljung-Box test.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Ljung-Box test}
+The Ljung-Box test statistic is defined as 
+$$
+Q = n(n+2) \sum_{k=1}^h \frac{\hat{\rho}_k^2}{n-k}
+$$
+where $\hat{\rho}_k$ is the sample autocorrelation up to lag $k$, and $h$ is some specified number of lags we want to include.
+\\ \medskip
+The null hypothesis is that the data are independently distributed. 
+\\ Under this hypothesis, $Q$ follows a standard $\chi^2$ distribution.
+\\ \medskip
+Hence, compare $Q$ with critical values of this distribution.
+\\ \medskip
+The test will tell us if there is \emph{some} remaining time series feature left in the data (up to lag $h$), but will not tell us exactly what it is.
+\end{frame}
+
+\begin{frame}[c]{Common practice}
+\begin{itemize}
+\item The Ljung-Box test statistic and p-values are a standard part of the output from ARMA estimation (usually with $h=1$).
+\medskip
+\item A common approach is to try different models until L-B test fails to reject the null that the residuals have no persistence.
+\medskip
+\item Again, keep in mind the role of common sense and judgment. 
+\\
+If you already have a sensible model, 
+it may not be worth adding extra complications just to lower the L-B statistic marginally.
+\end{itemize}
+\medskip
+\begin{itemize}
+\item 
+{\footnotesize
+\textbf{Critique of common practice:}
+When there are AR terms in the model, it is actually \emph{incorrect} to apply the L-B test to the residuals of the model.
+The correct test is a modified version called the \emph{Breusch-Godfrey} test, which leads to lower p-values.
+But you will rarely (if ever) see this in practice.
+}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{ARMA model selection: The Box-Jenkins approach}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{The Box-Jenkins approach}
+Combining all our pieces so far, we can map out an ARMA-based framework for modeling and forecasting a stationary data series:
+\begin{itemize}
+\smallskip
+\item Examine the series, especially its ACF and PACF graphs, 
+\\ to determine a few choices of $p$ and $q$ that we should consider.
+\item For each pair of $(p,q)$, estimate the parameter values by MLE. 
+\item Compare each set of results based on AIC or BIC. 
+\\ Check the ACF and PACF of the residuals, and the L-B test, 
+\\ for any remaining time-series patterns that should be modeled.
+\item Choose a model that scores well and is economically reasonable.
+\end{itemize}
+\smallskip
+If the data are not stationary, you first transform as necessary so that they are, and then follow this procedure. See discussion later.
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{After model selection and estimation:}
+\centerline{Building forecasts and prediction intervals}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{One-step forecast and prediction interval for MA(1)}
+Let's first think about a simple MA(1) process $y_t = \mu + u_t + \theta u_{t-1}$.
+\\ \smallskip
+Suppose the data ends at $T$. Let's forecast $y_{T+1} = \mu + u_{T+1} + \theta u_T$.
+\begin{itemize}
+\smallskip
+\item We first fit the model to get estimates of $\mu$, $\theta$, and also all of the $u$ values (using the sample residuals from the model).
+\begin{itemize}
+\smallskip
+\item All of these are just estimates, meaning there is still uncertainty in them -- but we will ignore that and act as though they are the true values. This is not quite ideal, but it is standard.
+\end{itemize}
+\smallskip
+\item As of time $T$, we forecast $y_{T+1}$ with its conditional expectation,
+\\ $\mathbb{E}_T[y_{T+1}] = \mu + \theta u_T$ (using the fact that $\mathbb{E}[u_{T+1}]=0$).
+\medskip
+\item $Var_T(y_{T+1}) = \sigma^2$, since $u_{T+1}$ is the only thing unknown as of $t$.
+\\ A 95\% prediction interval is our forecast $\pm 2 \times \sqrt{\sigma^2}$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Two-step forecast and prediction interval for MA(1)}
+Now let's forecast $y_{T+2} = \mu + u_{T+2} + \theta u_{T+1}$ as of time $T$.
+\\ \bigskip
+The forecast is $\mathbb{E}_T[y_{T+2}] = \mu$ since we don't know $u_{T+2}$ or $u_{T+1}$.
+\\ \bigskip
+Also because we don't know either of these errors, the prediction interval is wider:
+$Var_T(y_{T+2}) = Var(u_{T+2} + \theta u_{T+1}) = \sigma^2\times(1+\theta^2)$.
+\\ \bigskip
+A 95\% confidence interval is our forecast $\pm \sqrt{ \sigma^2\times(1+\theta^2) }$.
+\\ \bigskip
+In fact this expected value and variance are the long-run values, 
+so they will apply to all dates $T+2$ onward.
+This reflects the fact that shocks only affect an MA(1) process for two dates before dying out.
+\end{frame}
+
+\begin{frame}[c]{Forecasting an AR(1) process}
+Now consider an AR(1) process, $y_t = \mu + \phi y_{t-1} + u_t$.
+\\ \bigskip
+At time $T$ we forecast $y_{T+1} = \mu + \phi y_T + u_t$ as $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
+\\ \bigskip
+Farther out, $\mathbb{E}_T[y_{T+2}] = \mathbb{E}_T[\mu + \phi y_{T+1} + u_T] = \mu + \phi \mathbb{E}_T[y_{T+1}]$.
+\\ \smallskip And we just calculated $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
+\\ \smallskip We can just substitute that in, which gives us
+$$
+\mathbb{E}_T[y_{T+2}] = \mu(1+\phi) + \phi^2 y_T
+$$
+We can repeat this process to forecast as far out as we want.
+\\ \medskip
+Not surprisingly, the forecasts for an AR(1) will start close to $y_T$, 
+\\ and decay slowly to the long-run average of $\frac{\mu}{1-\phi}$.
+\end{frame}
+
+\begin{frame}[c]{Prediction interval for an AR(1) process}
+Just think carefully about what is known and unknown at time $T$:
+\begin{align*}
+Var_T(y_{T+1}) &= Var_T(\mu + \phi y_{T} + u_{T+1}) = \sigma^2
+\\
+Var_T(y_{T+2}) &= Var_T(\mu + \phi y_{T+1} + u_{T+2}) = \sigma^2 \phi^2 + \sigma^2 = \sigma^2(1+\phi^2)
+\\
+Var_T(y_{T+3}) &= Var_T(\mu + \phi y_{T+2} + u_{T+3}) 
+\\
+&\quad = \phi^2 [ \sigma^2(1 + \phi^2)] + \sigma^2 = \sigma^2(1+\phi^2+\phi^4)
+\end{align*}
+...and so forth. The variance grows towards a limit of $\frac{\sigma^2}{1-\phi^2}$.
+\end{frame}
+
+\begin{frame}[c]{Forecasts and prediction intervals in general}
+The procedure is the same for any ARMA model:
+\begin{itemize}
+\smallskip
+\item Build forecasts by substituting in values of $y$ and $u$ from the end of the dataset into the AR and MA terms of the model. 
+\begin{itemize}
+\item After reaching the last $y$, substitute forecasts of $y$.
+\item After reaching the last $u$, substitute zeros.
+\end{itemize}
+\smallskip
+\item For a prediction interval at horizon $k$:
+\begin{itemize}
+\item Add up $\phi^{2(k-1)} + \phi^{2(k-2)} ... $, and multiply by $\sigma^2$. 
+This is the forecast variance.
+Take the square root of that variance to get the standard error. A 95\% CI is the forecast $\pm$ two SEs.
+\end{itemize}
+\smallskip
+\item Of course this should really be done with software, not by hand.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Practical notes}
+\begin{itemize}
+\item All the above formulas for prediction intervals assume that the errors in the model are independent.
+They are not quite correct if there are remaining time-series patterns in the residuals.
+\begin{itemize}
+\item 
+This is one reason to check for such patterns. 
+\item However, the \emph{forecasts} themselves are not affected by this issue, as they only assume the shocks are zero on average.
+\end{itemize}
+\medskip
+\item \emph{All} the formulas ignore the fact that the model parameters themselves are estimated with uncertainty.
+\begin{itemize}
+\item This is a limitation, but it is standard. 
+\item One result is that prediction intervals are always too narrow.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]
+\vfill
+\centerline{Handling trends and seasonality in the ARMA framework}
+\vfill
+\end{frame}
+
+\begin{frame}[c]{Comparing ARMA with exponential smoothing methods}
+The ARMA framework assumes you have a stationary process.
+\begin{itemize}
+\item This means that ARMA is best seen as an alternative to \emph{simple} exponential smoothing.
+It will fail to capture stochastic trends, or seasonality, for the same reason that SES failed to do so.
+\end{itemize}
+\medskip
+Recall how we extended SES to address these issues:
+\begin{itemize}
+\item To handle trends, we used ``double'' exponential smoothing.
+\item To handle trends \emph{and} seasonality, we introduced ``triple'' exponential smoothing (also called the Holt-Winters method).
+\end{itemize}
+\medskip
+How do we do the same thing in the ARMA framework?
+\begin{itemize}
+\item To handle trends, we extend to ``ARIMA'' models.
+\\ Basically, modeling \emph{differenced} data by ARMA.
+\item To handle trends \emph{and} seasonality, we extend to ``SARIMA,''
+which features ``seasonal'' AR, MA, and differencing terms.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Trending data: ARIMA models}
+A strong trend is a source of nonstationary behavior.
+\\ \bigskip
+In the ARMA framework, trends are typically modeled as a unit root:
+\begin{itemize}
+\item
+Difference the data, and check that this difference is stationary.
+\item
+Then analyze the differenced data with the ARMA procedure.
+\end{itemize}
+\bigskip
+A process whose difference is ARMA$(p,q)$ is called ARIMA$(p,d,q)$.
+\\ ARIMA stands for \textbf{A}uto\textbf{R}egressive \textbf{I}ntegrated \textbf{M}oving \textbf{A}verage.
+\begin{itemize}
+\item
+The $p$ and $q$ parameters have the same meaning as before.
+\item
+We add $d$ in between them to denote the number of times that the data must be differenced in order for it to be stationary.
+\item
+In almost every real-world scenario, $d=1$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[c]{Seasonal data: SARMA and SARIMA models}
+\begin{itemize}
+\item
+Seasonality leads to regular spikes in the ACF and PACF.
+\\ These cannot be modeled with standard AR or MA processes.
+\medskip
+\item
+Instead, we add another dimension to the model:
+\\ A seasonal ARIMA model (SARIMA) has the usual ARIMA terms,
+plus \emph{seasonal} versions of these terms labeled $(P,D,Q)_s$.
+\medskip
+\item
+Altogether this is written as SARIMA$(p,d,q)\times(P,D,Q)_s$.
+\medskip
+\item SARIMA is the most general category of ARMA model,
+\\ and produces forecasts comparable to Holt-Winters.
+\medskip
+\item See examples on Canvas of SARIMA estimation and forecasting.
+\end{itemize}
+\end{frame}
+
+\end{document}

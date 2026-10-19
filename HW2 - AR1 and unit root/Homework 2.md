@@ -62,5 +62,5 @@ For each series, give a brief interpretation tied to the table and plot: would y
 
 For log dividend yield, run the auxiliary regression behind the ADF test, and display a summary of the regression results.
 
-- Identify the number in the regression summary that matches the ***ADF test statistic***, or else explain why there is no such number. Explain you cannot directly compare the p-value listed for this coefficient with the p-value from the ADF test. 
-- Identify the number in the regression summary that matches the ADF test ***p-value***, or else explain why there is no such number.
+- Identify the number in the regression summary table that matches the ***ADF test statistic***, or else explain why there is no such number.
+- Identify the number in the regression summary table that matches the ADF test ***p-value***, or else explain why there is no such number.

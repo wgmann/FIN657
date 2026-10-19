@@ -1,4 +1,4 @@
-# Homework 3: Modeling and forecasting inventory growth
+# Modeling and forecasting inventory growth
 
 Your goal in this assignment is to compare AR(1), MA(1), and ARMA(1,1) models for monthly business inventory growth. You will use the fitted results and a forecast evaluation to recommend an approach for this series.
 

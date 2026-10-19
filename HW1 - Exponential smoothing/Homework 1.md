@@ -1,4 +1,4 @@
-# Homework 1: Forecasting payrolls with exponential smoothing
+# Forecasting payrolls with exponential smoothing
 
 Your goal in this assignment is to compare smoothing methods for payroll series with different trend and seasonal features. You will use the fitted results and a short forecast evaluation to recommend an approach for each series.
 

@@ -1,4 +1,4 @@
-# Homework 2: Assessing stationarity in financial time series
+# Assessing stationarity in financial time series
 
 Your goal in this assignment is to construct five quarterly S&P 500 series, assess their stationarity, and explain which modeling assumptions the evidence supports. You will interpret the tests alongside the data to recommend which series to model as stationary.
 

@@ -1,4 +1,4 @@
-# Homework 4: Time-varying volatility and portfolio risk
+# Time-varying volatility and portfolio risk
 
 Your goal in this assignment is to compare constant-volatility and GARCH estimates of risk for momentum, value, and a combined strategy. You will use the fitted results and 12-month risk forecasts to assess how current volatility and diversification affect estimated portfolio risk.
 

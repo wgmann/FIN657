@@ -6,7 +6,6 @@
 # Operating system, editor, and notebook temporary files
 .DS_Store
 .idea/
-.vscode/
 .ipynb_checkpoints/
 *~
 *.swp

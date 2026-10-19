@@ -43,13 +43,11 @@ log_dividends_growth = log_dividends.diff().dropna()
 log_DP = np.log(dataq['dividends_qtr'] / dataq['spindx']).astype('float64')
 ```
 
-Check that each retained quarter contains all three months and that quantities to be logged are positive. The three log level series cover **2000Q1–2024Q4**; the two growth series begin in **2000Q2** and are decimal log changes.
-
 Plot all five series in separate figures, with clearly labeled axes.
 
 ## 2. Apply and interpret the tests, and make a recommendation
 
-For each of the five series, conduct ADF and KPSS tests using a constant but no deterministic time trend, following the specifications used in class. Use AIC-based automatic lag selection for ADF and automatic lag selection for KPSS. Use **5%** as a common significance level. 
+For each of the five series, conduct ADF and KPSS tests using a constant but no deterministic time trend, following the specifications used in class, and allowing for automatic lag selection.
 
 Make a compact table or list that reports, for each series:
 
@@ -58,13 +56,11 @@ Make a compact table or list that reports, for each series:
 - Whether each test rejects its own null at 5%.
 - A short assessment: evidence favoring stationarity, evidence against it, or inconclusive/mixed evidence under these specifications.
 
-State the two null hypotheses. Where the package reports that a p-value is outside its tabulated range, report it as a bound rather than an exact value. 
-
 For each series, give a brief interpretation tied to the table and plot: would you proceed with a stationary model **of that series**, and what qualification would you attach? 
 
 ## 3. Connect ADF to its regression
 
-For log dividend yield, reproduce the auxiliary regression underlying the ADF test and display a regression summary. 
+For log dividend yield, run the auxiliary regression behind the ADF test, and display a summary of the regression results.
 
-- Use the **same sample, constant, and number of lagged differences** as the selected ADF test. The dependent variable is the change in log yield; regressors are its lagged level and the selected lagged changes, plus a constant.
-- Identify the t-statistic on the lagged-level term and compare it numerically with the ADF test statistic. Explain you cannot directly compare the p-value listed for this coefficient with the p-value from the ADF test. 
+- Identify the number in the regression summary that matches the ***ADF test statistic***, or else explain why there is no such number. Explain you cannot directly compare the p-value listed for this coefficient with the p-value from the ADF test. 
+- Identify the number in the regression summary that matches the ADF test ***p-value***, or else explain why there is no such number.

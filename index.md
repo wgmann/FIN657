@@ -1,14 +1,8 @@
-#### [William Mann](https://wgmann.github.io), Goizueta Business School, Emory University
+#### [William Mann](https://wgmann.com), Goizueta Business School, Emory University
 
 ## Overview
 
-This is a landing page and documentation file for the [course Github repository](https://github.com/wgmann/FIN657) that I use when I teach FIN657.
-Eventually, it may become the main course page.
-For now, if you're looking for information about the course, including topics, schedule, assignments, and grading, please see the [syllabus](https://wgmann.github.io/FIN657/syllabus.pdf), or contact me directly.
-
-This repository contains the files used when I teach the course.
-It is a collection of slides, Python notebooks, and other materials.
-**Students in this course are required to run the code** contained in this repository in order to understand course concepts and complete homework assignments.
+This is a landing page and documentation file for the [course Github repository](https://github.com/wgmann/FIN657) that I use when I teach FIN657, which contains the slides and Python code that I use.  **Students in this course are required to run the code** contained in this repository in order to understand course concepts and complete homework assignments.
 
 The rest of this page explains how to set up your environment and run the code. You have two options: run the code on the web through GitHub Codespaces (easier), or locally on your own computer (more advanced). Either way, you will first need to get access to the FRED and WRDS databases.
 
@@ -35,22 +29,25 @@ Once you have your FRED API key and WRDS username, proceed to either of the next
 
 ## Option 1: Run notebooks on GitHub Codespaces (easier)
 
-GitHub Codespaces provides a cloud-based development environment that automatically sets up everything you need to run our course notebooks. This is the recommended approach for getting started.
+GitHub Codespaces provides a cloud-based environment that automatically sets up everything you need, including VSCode and an AI agent assistant. This is the easiest way to get started if you are new to these topics.
 
 (You will need to create a free GitHub account if you don't already have one, but this is strongly recommended anyway. If you really don't want to create a GitHub account, see the next section and download the repo as a ZIP file.)
 
-1. Open this repository on GitHub in your browser.
-2. Click the green "Code" button, select "Codespaces", and click "Create codespace on main" to create your own codespace for this repository.
-3. The system will prompt you to enter the WRDS_USERNAME and FRED_API_KEY that you obtained above.
-4. The first time you launch the codespace, you will need to wait 10-15 minutes for the environment to build.
-5. Then your browser will open a web version of VSCode, and you can navigate to any of our notebooks and run the code.
+1. Navigate to the [course Github repository](https://github.com/wgmann/FIN657)
+2. Click the green "Code" button. 
+3. To the right of the word "Codespaces", click the three dots, then "New with options".
+4. In the screen that appears, fill in your WRDS username and FRED API key in the appropriate locations. Then launch the codespace.
+5. The first time you launch the codespace, you will need to wait 2-3 minutes for it to build.
 
-For those who already use VSCode locally, you can also connect to your codespace from there instead of the browser: open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`), type "Connect to Codespace", and select the codespace you just created. 
-This is a middle ground between a completely browser-based approach (above) and a completely local approach (below).
+At this point you can navigate to any of the notebooks we will use in the course, and run any cell by clicking on it and hitting Shift+Enter. You can also talk to the AI agent for help understanding things, changing the code, or start an entirely new analysis. You are strongly encouraged to use this when working on your homework! After you save a file, you can download it to your own computer.
 
-**Note about other cloud systems:** Github Codespaces is our preferred cloud-based system, but there are many popular alternatives with similar functionality (e.g. Binder or Colab). If you use any such system, please be careful at all times with your database credentials. Only enter them into an appropriate secrets-handling system, not into the text of the notebook file itself. On some of these systems (including Binder) there is no secrets handler at all, in which case you should not use that system to run any code from this class that connects to a database.
+If you ever close the browser, you can open the codespace back up from the same menu where you launched it in the first place. You won't have to wait for the initial setup, it will just load.
 
-## Option 2: Run notebooks locally (advanced)
+The first time you connect to WRDS from within your codespace, it will prompt you for a password (and you will need to check your phone for 2FA as well). Then it will give you the option of saving a "pgpass" file so that you don't have to keep entering your password.
+
+You do not need to fork the repo in order to launch a codespace. But if you commit any changes, at that point Github will create a fork within your personal account. (If you don't know what these terms mean, don't worry about it.)
+
+## Option 2: Run notebooks locally (more advanced)
 
 Your own computer can easily run all the code that we use in class if you install a few components that it will look for. This takes a bit more work, but gives a much better experience after that.
 
@@ -60,11 +57,15 @@ Your own computer can easily run all the code that we use in class if you instal
     cd FIN657
     ```  
     If you don't have a GitHub account and don't want to create one, then download the repo as a zip folder from this site, extract it, and navigate into the directory that is created.
-2. Create a virtual environment for the course and activate that environment. The recommended approach is with Conda:
+2. Create a virtual environment for the course and activate that environment. If you have conda, then the easiest approach is:
     ```  
     conda env create -f environment.yml
     conda activate FIN657  
     ```  
+    If you don't have conda or don't want to use it, create and activate a virtual environment called `FIN657` (the commands for this depend on what OS you are using), and then 
+    ```
+    python -m pip install -r requirements.txt
+    ```
 3. Register the environment with Jupyter: With the virtual environment still activated from the previous step,  
     ```  
     python -m ipykernel install --user --name FIN657 --display-name "FIN657"  
@@ -85,13 +86,8 @@ Your own computer can easily run all the code that we use in class if you instal
     WRDS_USERNAME=johndoe  
     ```  
     The `load_dotenv()` function that appears at the start of every notebook will load this information automatically.  
-5. Open and run notebooks (`.ipynb` files): If using VSCode, then just open the repo directory you created, select the FIN657 kernel (if this does not happen automatically), and navigate to any file to open and run it.  
-    You can also avoid using VSCode, and get a slightly better visual experience, by opening the notebooks directly in a browser window. However, the commands for this are a bit clunky:
-    - Make sure your terminal window is running from inside the directory you created earlier, with the virtual environment activated.
-    - Enter `jupyter notebook` to launch a browser window with a view of the course files. If it does not happen automatically, look for a URL in the output of the command, copy and paste it into a browser window.
-    - Navigate to any file to open and run it. You may need to select the `FIN657` kernel if this does not happen automatically.
-    - When you are done working, go back to the window where you entered `jupyter notebook`, and enter `Ctrl+C` to kill it.
-
+5. Open and run notebooks (`.ipynb` files): If using VSCode or another IDE, then just open the repo directory you created, select the FIN657 kernel if necessary, and navigate to any file to open and run it.  
+There are also other ways to open and run the files, including directly in a web browser, but the process is a bit clunky and not worth covering for our course.
 
 ## Licensing
 

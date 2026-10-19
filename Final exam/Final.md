@@ -1,0 +1,1 @@
+This will be a written exam in class, in which you will be asked to think deeper about the analysis that was done in each of the homework assignments.

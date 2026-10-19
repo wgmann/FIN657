@@ -19,26 +19,15 @@ Download **Total Business Inventories**, FRED mnemonic **BUSINV**, through the *
 3. Separate the **growth series** into training data ending in **December 2010** and evaluation data covering **January 2011–December 2015**. Report the dates and counts of both samples. Calculate growth before splitting: January 2011 growth must use the December 2010 inventory level.
 4. Apply ADF and KPSS tests to the training growth series, using a constant but no deterministic time trend, AIC-based automatic lag selection for ADF, and automatic lag selection for KPSS. State each null hypothesis and briefly explain whether the results support proceeding with a stationary model of inventory growth.
 
-FRED may revise historical observations. Use the historical series downloaded today; you do not need to reconstruct the data releases available in 2010. Record your download date.
-
 ## 2. Fit and compare the models, and make a recommendation
 
-Use the Box–Jenkins approach from class to compare **AR(1), MA(1), and ARMA(1,1)**, using only the *training* sample.
-
-- Examine the ACF and PACF of the training growth series and briefly describe the main patterns.
-- Estimate all three models. Include a constant in each model and do not difference growth again. Report the estimated coefficients.
-- Plot the residual ACF and PACF for each model, showing at least 12 lags.
-- Make a compact table or list reporting each model's AIC and residual Ljung–Box p-value. Test residual autocorrelation through **12 monthly lags**: with `acorr_ljungbox`, use `lags=[12]` and `model_df=1` for AR(1) and MA(1), and `model_df=2` for ARMA(1,1).
-- Recommend one of the three models using only the training results. Justify your choice with specific evidence about both AIC and remaining residual autocorrelation. If the criteria disagree, briefly explain the disagreement.
-
-Make this recommendation before using the evaluation sample. Evaluate all three models in the next section, without using evaluation results to refit, tune, or expand the candidate models.
+Use the Box–Jenkins approach from class to compare **AR(1), MA(1), and ARMA(1,1)**, using only the *training* sample. Display all the diagnostics that we used in class as part of this approach. Based only on this evidence from the training sample, recommend one of the three models as most appropriate for the data.
 
 ## 3. Evaluation
 
-For each of the three models (not just the one you recommended!),
+For each of the three models you considered in Question 2,
 
 1. Generate 60 monthly forecasts of log inventory growth for **January 2011–December 2015**, all made as of the end of **December 2010**. Do not update the forecasts or re-estimate the models as evaluation observations become available.
-2. Plot the forecast mean and 95% **prediction intervals**, together with actual growth and some recent training history. Use one figure per model, with the same date range and axis scales, and clearly mark where forecasting starts. Visually, in what ways do the forecasts seem to succeed or fail?
-3. Briefly explain how quickly each forecast approaches its fitted long-run mean, relating its shape to the estimated AR and/or MA coefficients.
-4. Report the RMSE for each model over the same 60 evaluation months. Confirm that forecasts and actual observations align on the same dates, with no missing values entering RMSE. Which model has the lowest RMSE, and how much lower is it than the alternatives? Does the difference look substantial relative to the errors themselves?
-5. Does the ranking on evaluation RMSE agree with your recommendation in Question 2? Briefly explain what the diagnostic and forecast results imply for your choice among these three models, and identify one limitation of the evidence.
+2. Plot the forecast mean and 95% **prediction intervals**, together with the training data that came before the forecasts. Use one figure per model, with the same date range and axis scales. 
+3. Describe any differences across the models in how quickly each forecast approaches its fitted long-run mean. How are these differences connected to the structure of the model being estimated? In general, which one seems to perform the best in the evaluation period?
+4. Report the RMSE for each model over the same 60 evaluation months. Confirm that forecasts and actual observations align on the same dates, with no missing values entering RMSE. Which model has the lowest RMSE, and how much lower is it than the alternatives?

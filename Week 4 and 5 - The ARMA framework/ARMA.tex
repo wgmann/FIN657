@@ -452,7 +452,7 @@ The forecast is $\mathbb{E}_T[y_{T+2}] = \mu$ since we don't know $u_{T+2}$ or $
 Also because we don't know either of these errors, the prediction interval is wider:
 $Var_T(y_{T+2}) = Var(u_{T+2} + \theta u_{T+1}) = \sigma^2\times(1+\theta^2)$.
 \\ \bigskip
-A 95\% confidence interval is our forecast $\pm \sqrt{ \sigma^2\times(1+\theta^2) }$.
+A 95\% confidence interval is our forecast $\pm 2 \times\sqrt{ \sigma^2\times(1+\theta^2) }$.
 \\ \bigskip
 In fact this expected value and variance are the long-run values, 
 so they will apply to all dates $T+2$ onward.
@@ -462,18 +462,19 @@ This reflects the fact that shocks only affect an MA(1) process for two dates be
 \begin{frame}[c]{Forecasting an AR(1) process}
 Now consider an AR(1) process, $y_t = \mu + \phi y_{t-1} + u_t$.
 \\ \bigskip
-At time $T$ we forecast $y_{T+1} = \mu + \phi y_T + u_t$ as $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
+This model tells us that $y_{T+1} = \mu + \phi y_T + u_{T+1}$.
+\\ Then our forecast is $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
 \\ \bigskip
-Farther out, $\mathbb{E}_T[y_{T+2}] = \mathbb{E}_T[\mu + \phi y_{T+1} + u_T] = \mu + \phi \mathbb{E}_T[y_{T+1}]$.
-\\ \smallskip And we just calculated $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
-\\ \smallskip We can just substitute that in, which gives us
+One date farther out: $y_{T+2} = \mu + \phi y_{T+1} + u_{T+2}$.
+% \\ So, $\mathbb{E}_T[y_{T+2}] = \mu + \phi \mathbb{E}_T[y_{T+1}]$.
+\\ \smallskip We don't know $y_{T+1}$ yet. But, we forecasted $\mathbb{E}_T[y_{T+1}] = \mu + \phi y_T$.
+\\ \smallskip Substitute that in to get:
 $$
 \mathbb{E}_T[y_{T+2}] = \mu(1+\phi) + \phi^2 y_T
 $$
 We can repeat this process to forecast as far out as we want.
 \\ \medskip
-Not surprisingly, the forecasts for an AR(1) will start close to $y_T$, 
-\\ and decay slowly to the long-run average of $\frac{\mu}{1-\phi}$.
+The forecasts for an AR(1) start close to $y_T$, and decay slowly to $\frac{\mu}{1-\phi}$.
 \end{frame}
 
 \begin{frame}[c]{Prediction interval for an AR(1) process}

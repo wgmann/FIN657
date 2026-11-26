@@ -1,1 +1,1 @@
-This will be a written exam in class, in which you will be asked to think deeper about the analysis that was done in each of the homework assignments.
+This will be a written exam in class, in which you will be asked to think deeper about the analysis that was done in each of the homework assignments. After Thanksgiving, we will spend some time in class explaining what to expect.

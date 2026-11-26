@@ -44,7 +44,7 @@ Use **three monthly lags** for both ARCH-LM tests (`nlags=3` in `het_arch`). Mak
 
 ## 3. Compare 12-month risk estimates
 
-For each of the strategies, calculate a **12-month, 5\% Value at Risk**, following the definitions and formulas in class. Do this two ways: First use a **constant volatility** model, and then use a **GARCH** model.
+For each of the strategies, calculate a **12-month, 5% Value at Risk**, following the definitions and formulas in class. Do this two ways: First use a **constant volatility** model, and then use a **GARCH** model.
 
 1. Comparing across the two volatility models, which method reports greater risk at this forecast date? Why does this make sense? Describe an important takeaway from this result for a portfolio manager.
 2. Comparing across the strategies, how does Combo's estimated risk compare with the individual strategies? Why does this make sense? Describe an important takeaway from this result for a portfolio manager.

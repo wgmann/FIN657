@@ -1,6 +1,6 @@
 # Time-varying volatility and portfolio risk
 
-Your goal in this assignment is to compare constant-volatility and GARCH estimates of risk for momentum, value, and a combined strategy. You will use the fitted results and 12-month risk forecasts to assess how current volatility and diversification affect estimated portfolio risk.
+Your goal in this assignment is to compare constant-volatility and GARCH estimates of risk for momentum, value, and a combined strategy. You will compare risk forecasts from two points in the dot-com episode to see how the models revise their estimates as new returns arrive and how the combined strategy compares with its two components.
 
 You can use our class slides and code as a template and guide on how to do the analysis. The most relevant files for this assignment are the ones on **Volatility modeling**. You are also encouraged to use AI tools to help you, and they can refer to the course files as well.
 
@@ -12,7 +12,7 @@ Again, you should just upload a single self-contained script with no other suppo
 
 ## 1. Obtain and prepare the data
 
-Use the **WRDS API** to retrieve monthly factor data from **ff_all.factors_monthly**, including **date**, **umd**, and **hml**, for **January 2010 through April 2020**, inclusive. These return fields use decimal units. Record your download date and close the connection after retrieval.
+Use the **WRDS API** to retrieve monthly factor data from **ff_all.factors_monthly**, including **date**, **umd**, and **hml**, for **July 1963 through July 2001**, inclusive. These return fields use decimal units. Record your download date and close the connection after retrieval.
 
 Construct monthly simple returns for the following strategies:
 
@@ -28,7 +28,7 @@ Construct monthly simple returns for the following strategies:
 4. Convert each of the three simple returns $r_t$ (UMD, HML, and Combo) to log return via $\ln(1+r_t)$.
 5. Plot the cumulative gross returns, $\exp(\sum r_t^{log})$, for all three strategies UMD, HML, and Combo, compared to a normalized starting wealth of 1.
 
-Estimate all models using observations through April 2020 and forecast **May 2020–April 2021**. 
+Use the full sample through July 2001 for the diagnostics in Part 2.
 
 ## 2. Fit and assess the volatility models
 
@@ -44,7 +44,15 @@ Use **three monthly lags** for both ARCH-LM tests (`nlags=3` in `het_arch`). Mak
 
 ## 3. Compare 12-month risk estimates
 
-For each of the strategies, calculate a **12-month, 5% Value at Risk**, following the definitions and formulas in class. Do this two ways: First use a **constant volatility** model, and then use a **GARCH** model.
+For each strategy, calculate the **12-month, 5% Value at Risk (VaR)** under the constant-volatility and GARCH models using the method from class. Use July 1963 as the start of both estimation samples. Run the same analysis at each cutoff, fitting both models using only returns through the last month shown.
 
-1. Comparing across the two volatility models, which method reports greater risk at this forecast date? Why does this make sense? Describe an important takeaway from this result for a portfolio manager.
-2. Comparing across the strategies, how does Combo's estimated risk compare with the individual strategies? Why does this make sense? Describe an important takeaway from this result for a portfolio manager.
+| Last month in estimation sample | 12-month forecast period |
+| --- | --- |
+| July 1999 | August 1999–July 2000 |
+| July 2001 | August 2001–July 2002 |
+
+1. In one table, report the July 1999 VaR, the July 2001 VaR, and the change (July 2001 minus July 1999) for each strategy and model. Label the units and use the same VaR sign convention throughout.
+2. Use your table to identify and explain the patterns you see across models, dates, and strategies.
+   - How does GARCH VaR differ from constant-volatility VaR at each date? How do the models' volatility assumptions help explain those differences?
+   - How does VaR change from July 1999 to July 2001? Where is the change larger under GARCH, and why might GARCH respond more strongly to the returns added between the two dates?
+   - How does Combo's VaR compare with UMD's and HML's across both models and dates? How does diversification help explain what you see?
